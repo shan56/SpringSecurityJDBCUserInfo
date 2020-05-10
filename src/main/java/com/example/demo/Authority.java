@@ -20,15 +20,22 @@ public class Authority {
     @Column(name = "authority")
     private String authority;
 
-    @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
-    private Collection<User> users;
-
+    //    @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
+    //    private Collection<User> users;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Authority() {
     }
 
     public Authority(String username, String authority) {
         this.username = username;
+        this.authority = authority;
+        //this.user = new User();
+    }
+
+    public Authority(String authority) {
         this.authority = authority;
     }
 
@@ -54,5 +61,13 @@ public class Authority {
 
     public void setAuthority(String authority) {
         this.authority = authority;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

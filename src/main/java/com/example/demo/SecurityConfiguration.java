@@ -19,7 +19,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/**").hasAnyRole("ADMIN", "USER")
+//                .antMatchers("/admin").hasAuthority("ROLE_ADMIN")
+//                .antMatchers("/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+//                .antMatchers("/**").authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -52,7 +56,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
-                .dataSource(dataSource);
+                .dataSource(dataSource)
+                .usersByUsernameQuery("select username, password, enabled from users_db where username=?")
+                .authoritiesByUsernameQuery("select username, authority from authorities where username=?");
 
     }
 

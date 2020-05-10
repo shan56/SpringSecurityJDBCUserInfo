@@ -1,11 +1,15 @@
 package com.example.demo;
 
+import org.hibernate.query.criteria.internal.expression.AbstractTupleElement;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 public class SpringSecurityJdbcDataSource {
@@ -18,22 +22,36 @@ public class SpringSecurityJdbcDataSource {
     @Bean
     public CommandLineRunner run(UserRepository userRepository, AuthorityRepository authorityRepository) throws Exception {
         return (String[] args) -> {
-            authorityRepository.save(new Authority("neo", "USER"));
-            authorityRepository.save(new Authority("oracle","ADMIN"));
-
-            Authority userAuthority = authorityRepository.findByAuthority("USER");
-            Authority adminAuthority = authorityRepository.findByAuthority("ADMIN");
-
-            User user = new User("neo", "neo@matrix.com", "user",
-                                  "Neo", "Wonder", true);
-            user.setAuthorities(Arrays.asList(userAuthority));
+            User user = new User("darth", "darth@domain.com", "darth",
+                                  "Darth", "Vader", true);
+            Authority userAuth = new Authority("darth", "ROLE_USER");
+            Set<Authority> userAuthorities = new HashSet<Authority>();
+            userAuthorities.add(userAuth);
+            user.setAuthorities(userAuthorities);
             userRepository.save(user);
+            authorityRepository.save(userAuth);
 
+            User superuser = new User("super", "super@domain.com", "super",
+                    "Super", "Super", true);
 
-            User admin  = new User("oracle", "oracle@matrix.com", "super",
-                    "Oracle", "Super", true);
-            admin.setAuthorities(Arrays.asList(adminAuthority));
+            Authority superAut1 = new Authority("super", "ROLE_USER");
+            Authority superAut2 = new Authority("super", "ROLE_ADMIN");
+            Set<Authority> superAuthorities = new HashSet<Authority>();
+            superAuthorities.add(superAut1);
+            superAuthorities.add(superAut2);
+            superuser.setAuthorities(superAuthorities);
+            userRepository.save(superuser);
+            authorityRepository.save(superAut1);
+            authorityRepository.save(superAut2);
+
+            User admin = new User("yoda", "yoda@domain.com", "yoda",
+                    "Yoda", "Adoy", true);
+            Authority adminAuth = new Authority("yoda", "ROLE_ADMIN");
+            Set<Authority> adminAuthorities = new HashSet<Authority>();
+            adminAuthorities.add(adminAuth);
+            admin.setAuthorities(adminAuthorities);
             userRepository.save(admin);
+            authorityRepository.save(adminAuth);
         };
     }
 

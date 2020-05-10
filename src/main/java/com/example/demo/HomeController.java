@@ -31,29 +31,9 @@ public class HomeController {
         return "redirect:/login?logout=true";
     }
 
-
-
-    /*
-    @GetMapping("/registration")
-    public String registration(Model model) {
-        model.addAttribute("userForm", new User());
-        return "registration";
+    @RequestMapping("/admin")
+    public String admin() {
+        return "admin";
     }
 
-    @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") User userForm,
-                               BindingResult bindingResult) {
-        userValidator.validate(userForm, bindingResult);
-        if (bindingResult.hasErrors()) {
-             return "registration";
-        }
-
-        userService.save(userForm);
-        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-
-        return "redirect:/index";
-    }
-
-
-     */
 }

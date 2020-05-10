@@ -3,9 +3,10 @@ package com.example.demo;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
-@Table(name="users")
+@Table(name="users_db")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,10 +30,13 @@ public class User {
     @Column (name = "enabled")
     private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(joinColumns = @JoinColumn(name="user_id"),
-               inverseJoinColumns = @JoinColumn(name = "authority_id"))
-    private Collection<Authority> authorities;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(joinColumns = @JoinColumn(name="user_id"),
+//               inverseJoinColumns = @JoinColumn(name = "authority_id"))
+//private Collection<Authority> authorities;
+
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Authority> authorities;
 
     public User() {
     }
@@ -41,8 +45,8 @@ public class User {
                 String lastName, boolean enabled) {
         this.username = username;
         this.email = email;
-        //this.setPassword(password);
-        this.password = password;
+        this.setPassword(password);
+        //this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.enabled = enabled;
@@ -106,13 +110,11 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Collection<Authority> getAuthorities() {
+    public Set<Authority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Collection<Authority> authorities) {
+    public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
-
-
 }
