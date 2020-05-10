@@ -6,10 +6,9 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-//@Table(name="authorities", uniqueConstraints = @UniqueConstraint(columnNames = {"username", "authority"}))
-@Table(name="authorities")
+@Table(name="roles")
 
-public class Authority {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -17,26 +16,19 @@ public class Authority {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "authority")
-    private String authority;
+    @Column(name = "role")
+    private String role;
 
-    //    @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
-    //    private Collection<User> users;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Authority() {
+    public Role() {
     }
 
-    public Authority(String username, String authority) {
+    public Role(String username, String role) {
         this.username = username;
-        this.authority = authority;
-        //this.user = new User();
-    }
-
-    public Authority(String authority) {
-        this.authority = authority;
+        this.role = role;
     }
 
     public long getId() {
@@ -55,12 +47,12 @@ public class Authority {
         this.username = username;
     }
 
-    public String getAuthority() {
-        return authority;
+    public String getRole() {
+        return role;
     }
 
-    public void setAuthority(String authority) {
-        this.authority = authority;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public User getUser() {

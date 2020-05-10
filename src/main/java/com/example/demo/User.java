@@ -2,7 +2,6 @@ package com.example.demo;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -30,13 +29,9 @@ public class User {
     @Column (name = "enabled")
     private boolean enabled;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(joinColumns = @JoinColumn(name="user_id"),
-//               inverseJoinColumns = @JoinColumn(name = "authority_id"))
-//private Collection<Authority> authorities;
 
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Authority> authorities;
+    private Set<Role> roles;
 
     public User() {
     }
@@ -46,7 +41,6 @@ public class User {
         this.username = username;
         this.email = email;
         this.setPassword(password);
-        //this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.enabled = enabled;
@@ -110,11 +104,11 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Set<Authority> getAuthorities() {
-        return authorities;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
