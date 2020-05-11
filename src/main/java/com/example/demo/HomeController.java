@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -9,15 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
 @Controller
 public class HomeController {
 
     @RequestMapping("/")
-    public String index(HttpServletRequest request, Model model) {
-        Authentication auth = SecurityContextHolder.getContext()
-                .getAuthentication();
-        model.addAttribute("user", auth.getName());
+    public String index() {
         return "index";
     }
 
@@ -34,6 +33,16 @@ public class HomeController {
     @RequestMapping("/admin")
     public String admin() {
         return "admin";
+    }
+
+    @Autowired
+    UserRepository userRepository;
+
+    @RequestMapping("/secure")
+    public String secure(Principal principal, Model model) {
+        String username = principal.getName();
+        model.addAttribute("user", userRepository.findByUsername(username));
+        return "secure";
     }
 
 }
