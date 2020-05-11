@@ -16,9 +16,7 @@ import java.security.Principal;
 public class HomeController {
 
     @RequestMapping("/")
-    public String index() {
-        return "index";
-    }
+    public String index() { return "index"; }
 
     @RequestMapping("/login")
     public String login() {
