@@ -5,14 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @SpringBootApplication
-public class SpringSecurityJdbcDataSource {
+public class SpringSecurityJdbcUserInfo {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringSecurityJdbcDataSource.class, args);
+        SpringApplication.run(SpringSecurityJdbcUserInfo.class, args);
     }
 
 
